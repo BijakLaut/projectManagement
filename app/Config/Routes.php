@@ -43,7 +43,6 @@ $routes->add('/addJob/(:num)/(:num)', 'Unit::addJob/$1/$2');
 
 
 $routes->add('/jobDetail/(:num)/(:num)', 'Job::index/$1/$2');
-$routes->add('/detailPekerjaan', 'Dashboard::detailPekerjaan');
 
 
 /*
