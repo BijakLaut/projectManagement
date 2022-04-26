@@ -1,4 +1,6 @@
-<?= $this->extend('layout/template'); ?>
+<?=
+$this->extend('layout/template');
+?>
 
 <?= $this->section('content'); ?>
 <div class="container">
@@ -59,23 +61,26 @@
                 </li>
             </ul>
         </div>
-        <div class="dropdown col-4 justify-content-end">
-            <button class="btn btn-sm btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width: 200px;">
-                <?= $job['name'] ?>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item disabled">Jenis Pekerjaan</a></li>
-                <li>
-                    <hr class="dropdown-divider">
-                </li>
-                <?php foreach ($jobList as $jobs) : ?>
+        <div class="col-4">
+            <button class="btn btn-sm btn-outline-info" style="width:200px;" data-bs-toggle="modal" data-bs-target="#modalEditPekerjaan">Ubah Detail</button>
+            <div class="dropdown">
+                <button class="btn btn-sm btn-outline-success dropdown-toggle mt-2" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width: 200px;">
+                    <?= $job['name'] ?>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item disabled">Jenis Pekerjaan</a></li>
                     <li>
-                        <a class="dropdown-item <?= ($jobs['name'] == $job['name']) ? 'active disabled' : '' ?>" href="<?= base_url('/jobDetail/' . $jobs['job_id'] . '/' . $unit['unit_id']) ?>">
-                            <?= $jobs['name'] ?>
-                        </a>
+                        <hr class="dropdown-divider">
                     </li>
-                <?php endforeach; ?>
-            </ul>
+                    <?php foreach ($jobList as $jobs) : ?>
+                        <li>
+                            <a class="dropdown-item <?= ($jobs['name'] == $job['name']) ? 'active disabled' : '' ?>" href="<?= base_url('/jobDetail/' . $jobs['job_id'] . '/' . $unit['unit_id']) ?>">
+                                <?= $jobs['name'] ?>
+                            </a>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
         </div>
     </div>
 
@@ -182,6 +187,44 @@
                         </div>
                     </li>
                 </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Edit Unit -->
+<div class="modal fade" id="modalEditPekerjaan" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalEditPekerjaanLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEditPekerjaanLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="<?= base_url('/editJob') ?>" method="POST" id="editJob" novalidate>
+                    <?php csrf_field(); ?>
+                    <input type="hidden" class="form-control" name="job_id" value="">
+                    <input type="hidden" class="form-control" name="unit_id" value="">
+                    <input type="hidden" class="form-control" name="form_id" value="">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Nama Pekerjaan</label>
+                        <input type="text" class="form-control" name="name" autocomplete="off" required>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="code" class="form-label">Perkembangan Pekerjaan</label>
+                        <input type="text" class="form-control" name="progress" value="" autocomplete="off" required>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="duedate" class="form-label">Target Penyelesaian</label>
+                        <input type="date" class="form-control" name="duedate" autocomplete="off" required>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary" type="submit">Ubah Detail</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
