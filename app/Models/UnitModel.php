@@ -9,7 +9,7 @@ class UnitModel extends Model
     protected $table = "unit";
     protected $primaryKey = 'unit_id';
     protected $useTimestamps = true;
-    protected $allowedFields = ['name', 'code', 'duedate', 'segment_id'];
+    protected $allowedFields = ['name', 'code', 'progress', 'duedate', 'segment_id'];
 
     public function getUnitList($segmentId = false)
     {
@@ -50,5 +50,28 @@ class UnitModel extends Model
         ];
 
         return $unitDetail;
+    }
+
+    public function getUnitProgress($segmentId)
+    {
+        $sql = "SELECT progress FROM unit WHERE segment_id = $segmentId";
+
+        $query = $this->db->query($sql);
+
+        $result = $query->getResult('array');
+
+        $unpacks = [];
+        for ($i = 0; $i < count($result); $i++) {
+            $unpacks += [
+                $i => $result[$i]['progress']
+            ];
+        }
+
+        $result = array_reduce($unpacks, function ($acc, $curr) {
+            $acc = $acc + $curr;
+            return $acc;
+        }, 0) / count($unpacks);
+
+        return $result;
     }
 }
