@@ -15,7 +15,6 @@
                     </div>
                 </form>
                 <ul class="list-group my-3">
-                    <!-- <?php foreach ($a as $b) : ?> -->
                     <li class="list-group-item d-flex justify-content-between">
                         <span class="col">Surat Perintah Kerja Maret 2022</span>
                         <div class="col d-flex justify-content-end">
@@ -23,7 +22,6 @@
                             <button class="btn btn-sm btn-outline-warning me-0" type="button">Unduh</button>
                         </div>
                     </li>
-                    <!-- <?php endforeach; ?> -->
                 </ul>
             </div>
         </div>
@@ -61,17 +59,18 @@
     </div>
 </div>
 
-<!-- Modal Tambah Unit -->
-<div class="modal fade" id="modalTambahUnit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalTambahUnitLabel" aria-hidden="true">
+<!-- Modal Unit (Add-Edit) -->
+<div class="modal fade" id="modalUnit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalTambahUnitLabel"></h5>
+                <h5 class="modal-title"></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="<?= base_url('/addUnit') ?>" method="POST" id="addUnit" data-segmentid="<?= $segment['segment_id'] ?>" novalidate>
+                <form action="" method="POST" id="" novalidate>
                     <?php csrf_field(); ?>
+                    <input type="hidden" class="form-control" name="unit_id" value="">
                     <input type="hidden" class="form-control" name="segment_id" value="">
                     <input type="hidden" class="form-control" name="form_id" value="">
                     <div class="mb-3">
