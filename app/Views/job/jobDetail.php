@@ -67,7 +67,7 @@ $this->extend('layout/template');
             </ul>
         </div>
         <div class="col-4">
-            <button class="btn btn-sm btn-outline-info" style="width:200px;" data-bs-toggle="modal" data-bs-target="#modalEditJob" data-segmentid="<?= $unit['segment_id'] ?>" onclick="populate(this, <?= htmlentities(json_encode($job)); ?>); ">Ubah Detail</button>
+            <button class="btn btn-sm btn-outline-info" style="width:200px;" data-bs-toggle="modal" data-bs-target="#modalEditJob" data-segmentid="<?= $unit['segment_id'] ?>" data-jobname="<?= $job['name'] ?>" onclick="populate(this, <?= htmlentities(json_encode($job)); ?>); ">Ubah Detail</button>
             <div class="dropdown">
                 <button class="btn btn-sm btn-outline-success dropdown-toggle mt-2" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width: 200px;">
                     <?= $job['name'] ?>
