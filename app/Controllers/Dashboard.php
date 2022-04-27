@@ -144,6 +144,29 @@ class Dashboard extends BaseController
                     ]
                 ]
             ];
+        } else if ($_POST['form_id'] == 'editJob') {
+            $fields = [
+                'name' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'Nama Pekerjaan tidak boleh kosong'
+                    ]
+                ],
+                'progress' => [
+                    'rules' => 'required|greater_than_equal_to[0]|less_than_equal_to[100]',
+                    'errors' => [
+                        'required' => 'Progress Pekerjaan tidak boleh kosong',
+                        'greater_than_equal_to' => 'Progress Pekerjaan tidak boleh kurang dari {param}',
+                        'less_than_equal_to' => 'Progress Pekerjaan tidak boleh lebih dari {param}'
+                    ]
+                ],
+                'duedate' => [
+                    'rules'     => 'required',
+                    'errors'    => [
+                        'required' => 'Target Penyelesaian tidak boleh kosong'
+                    ]
+                ]
+            ];
         }
 
         $this->validate($fields);
