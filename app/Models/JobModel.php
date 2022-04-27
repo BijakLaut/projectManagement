@@ -9,7 +9,7 @@ class JobModel extends Model
     protected $table = "job";
     protected $primaryKey = 'job_id';
     protected $useTimestamps = true;
-    protected $allowedFields = ['name', 'duedate', 'unit_id'];
+    protected $allowedFields = ['name', 'progress', 'duedate', 'unit_id'];
 
     public function getJobList($unitId)
     {
@@ -18,10 +18,6 @@ class JobModel extends Model
         $query = $this->db->query($sql);
 
         return $query->getResult('array');
-
-        // $jobList = $this->where('unit_id', $unitId)->findAll();
-
-        // return $jobList;
     }
 
     public function getJobDetail($id)
@@ -29,7 +25,7 @@ class JobModel extends Model
         $jobDetail = $this->find($id);
 
         $timeNow = strtotime('now');
-        $duedateDisplay = date('d M Y', strtotime($jobDetail['duedate']));
+        $duedateDisplay = date('Y-m-d', strtotime($jobDetail['duedate']));
 
         $duedate = strtotime($jobDetail['duedate']);
         $datediff = ($duedate - $timeNow) / 60 / 60 / 24;
@@ -41,5 +37,28 @@ class JobModel extends Model
         ];
 
         return $jobDetail;
+    }
+
+    public function getJobProgress($unitId)
+    {
+        $sql = "SELECT progress FROM job WHERE unit_id = $unitId";
+
+        $query = $this->db->query($sql);
+
+        $result = $query->getResult('array');
+
+        $unpacks = [];
+        for ($i = 0; $i < count($result); $i++) {
+            $unpacks += [
+                $i => $result[$i]['progress']
+            ];
+        }
+
+        $result = array_reduce($unpacks, function ($acc, $curr) {
+            $acc = $acc + $curr;
+            return $acc;
+        }, 0) / count($unpacks);
+
+        return $result;
     }
 }
