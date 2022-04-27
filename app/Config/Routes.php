@@ -41,8 +41,8 @@ $routes->delete('/delete/(:any)/(:any)', 'Dashboard::delete/$1/$2');
 $routes->add('/unitDetail/(:num)/(:num)', 'Unit::index/$1/$2');
 $routes->add('/addJob/(:num)/(:num)', 'Unit::addJob/$1/$2');
 
-
 $routes->add('/jobDetail/(:num)/(:num)', 'Job::index/$1/$2');
+$routes->post('/editJob', 'Job::editJob');
 
 
 /*
