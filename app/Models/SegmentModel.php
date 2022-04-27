@@ -9,7 +9,7 @@ class SegmentModel extends Model
     protected $table = "segment";
     protected $primaryKey = 'segment_id';
     protected $useTimestamps = true;
-    protected $allowedFields = ['name', 'duedate'];
+    protected $allowedFields = ['name', 'progress', 'duedate'];
 
     public function includeRemainingTime()
     {
