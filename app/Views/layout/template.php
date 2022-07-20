@@ -8,8 +8,8 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link href="<?= base_url(); ?>/assets/dist/css/headers.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?= base_url(); ?>/assets/dist/css/style.css">
+    <link href="<?= base_url(); ?>/assets/css/headers.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?= base_url(); ?>/assets/css/style.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet">
 
@@ -62,17 +62,18 @@
 
                 <div class="dropdown text-end">
                     <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="me-1">Hudaa Eka Saputra</span>
-                        <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                        <span class="me-1"><?= user()->username ?></span>
+                        <img src="<?= base_url() ?>/assets/img/<?= user()->user_image ?>" alt="mdo" width="32" height="32" class="rounded-circle">
                     </a>
                     <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                        <li><a class="dropdown-item" href="#">New project...</a></li>
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <?php if (in_groups('SuperAdmin')) : ?>
+                            <li><a class="dropdown-item" href="<?= route_to('admin') ?>">Admin Dashboard</a></li>
+                        <?php endif; ?>
                         <li><a class="dropdown-item" href="#">Profile</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                        <li><a class="dropdown-item" href="/logout">Log out</a></li>
                     </ul>
                 </div>
             </div>
@@ -91,7 +92,7 @@
                         <use xlink:href="#bootstrap" />
                     </svg>
                 </a>
-                <span class="text-muted">&copy; 2022 ALSUD CORPORATION</span>
+                <span class="text-muted">&copy; <?= date('Y') ?> ALSUD CORPORATION</span>
             </div>
 
             <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
@@ -109,8 +110,8 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <script src="<?= base_url(); ?>/assets/dist/js/jquery-3.6.0.min.js"></script>
-    <script src="<?= base_url(); ?>/assets/dist/js/script.js"></script>
+    <script src="<?= base_url(); ?>/assets/js/jquery-3.6.0.min.js"></script>
+    <script src="<?= base_url(); ?>/assets/js/script.js"></script>
 
 </body>
 

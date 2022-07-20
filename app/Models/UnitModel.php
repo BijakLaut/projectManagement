@@ -9,12 +9,19 @@ class UnitModel extends Model
     protected $table = "unit";
     protected $primaryKey = 'unit_id';
     protected $useTimestamps = true;
-    protected $allowedFields = ['name', 'code', 'progress', 'duedate', 'segment_id'];
+    protected $allowedFields = ['name', 'code', 'progress', 'status', 'duedate', 'segment_id', 'completion_date'];
+    protected $db, $builder;
+
+    public function __construct()
+    {
+        $this->db = \Config\Database::connect();
+        $this->builder = $this->db->table('unit');
+    }
 
     public function getUnitList($segmentId = false)
     {
         if ($segmentId) {
-            $unitList = $this->where('segment_id', $segmentId)->findAll();
+            $unitList = $this->builder->select('*')->where('segment_id', $segmentId)->get()->getResultArray();
 
             for ($i = 0; $i < count($unitList); $i++) {
                 $duedateDisplay = date('Y-m-d', strtotime($unitList[$i]['duedate']));
@@ -24,7 +31,8 @@ class UnitModel extends Model
             }
         }
 
-        $unitList = $this->findAll();
+        $this->builder->resetQuery();
+        $unitList = $this->builder->select('*')->get()->getResultArray();
 
         for ($i = 0; $i < count($unitList); $i++) {
             $duedateDisplay = date('Y-m-d', strtotime($unitList[$i]['duedate']));
@@ -36,15 +44,21 @@ class UnitModel extends Model
 
     public function getUnitDetail($id)
     {
-        $unitDetail = $this->find($id);
-        $timeNow = strtotime('now');
+        $unitDetail = $this->builder->select('*')->where('unit_id', $id)->get()->getRowArray();
         $duedateDisplay = date('d M Y', strtotime($unitDetail['duedate']));
-
-        $duedate = strtotime($unitDetail['duedate']);
-        $datediff = ($duedate - $timeNow) / 60 / 60 / 24;
-        $datediff = ceil($datediff);
-
         $unitDetail['duedate'] = $duedateDisplay;
+
+        // Hitung selisih untuk Sisa Waktu dan Waktu Penyelesaian
+        if ($unitDetail['status'] == 'Selesai') {
+            $duedate = strtotime($unitDetail['duedate']);
+            $compdate = strtotime($unitDetail['completion_date']);
+            $datediff = ceil(($compdate - $duedate) / 60 / 60 / 24);
+        } else {
+            $timeNow = strtotime('now');
+            $duedate = strtotime($unitDetail['duedate']);
+            $datediff = ceil(($duedate - $timeNow) / 60 / 60 / 24);
+        }
+
         $unitDetail += [
             'datediff' => $datediff,
         ];
@@ -54,17 +68,12 @@ class UnitModel extends Model
 
     public function getUnitProgress($segmentId)
     {
-        $sql = "SELECT progress FROM unit WHERE segment_id = $segmentId";
-
-        $query = $this->db->query($sql);
-
-        $result = $query->getResult('array');
+        $this->builder->select('progress')->where('segment_id', $segmentId);
+        $results = $this->builder->get()->getResultArray();
 
         $unpacks = [];
-        for ($i = 0; $i < count($result); $i++) {
-            $unpacks += [
-                $i => $result[$i]['progress']
-            ];
+        foreach ($results as $int => $result) {
+            $unpacks += [$int => $result['progress']];
         }
 
         $result = array_reduce($unpacks, function ($acc, $curr) {
